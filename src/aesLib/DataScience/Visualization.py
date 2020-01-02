@@ -25,6 +25,3 @@ def plotHeatmapBetweenColumns(df: pd.DataFrame, size: tuple, savefig=False, path
         plt.savefig(pathAndFileName)
 
     return ax
-
-def exampleFunction(df: pd.DataFrame):
-    
