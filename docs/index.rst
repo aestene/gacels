@@ -11,6 +11,7 @@ Welcome to aesLib's documentation!
    :caption: Contents:
 
     usage/quickstart
+    usage/Visualization
 
 
 Indices and tables
