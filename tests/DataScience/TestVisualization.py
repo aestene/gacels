@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 
-from src.aesLib.DataScience import Visualization as vis
+from src.AesLib.DataScience import Visualization as vis
 
 
 def test_plotHeatmapBetweenColumnsSaveFigure():
