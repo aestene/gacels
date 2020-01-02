@@ -1,17 +1,22 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
-import aesLib.DataScience.Visualization as vis
+from src.aesLib.DataScience import Visualization as vis
 
 
-def test_plotHeatmapBetweenColumnsReturnType():
+def test_plotHeatmapBetweenColumnsSaveFigure():
     data = {'col1': [1, 2, 3, 4], 'col2': [1, 2, 3, 4]}
     df = pd.DataFrame(data)
     
     size = (10, 10)
     
-    savefig = False
+    savefig = True
 
-    ax = vis.plotHeatmapBetweenColumns(df, size, savefig)
+    filename = 'test-figure.png'
 
-    assert type(ax) is plt.Axes
+    ax = vis.plotHeatmapBetweenColumns(df, size, savefig, filename)
+
+    assert os.path.isfile(filename) == True
+
+    os.remove(filename)
