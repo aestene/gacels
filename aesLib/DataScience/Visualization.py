@@ -3,6 +3,12 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 
-def plotCorrelationBetweenColumnsAsHeatmap(df: pd.DataFrame):
-    print("This is an example")
-    print("Extra push to branch")
+def plotHeatmapBetweenColumns(df: pd.DataFrame, size: tuple, savefig: bool, pathAndFileName='heatmap') -> plt.axes:
+    fig = plt.figure(figsize=size)
+
+    ax = sns.heatmap(df, vmin=-1, cmap='coolwarm', annot=True)
+
+    if savefig:
+        plt.savefig(pathAndFileName)
+
+    return ax
