@@ -1,4 +1,5 @@
-numpy
-seaborn
-matplotlib
-pandas
+numpy=1.17.*
+seaborn=0.9.*
+matplotlib=3.1.*
+pandas=0.25.*
+pytest=5.3.*
