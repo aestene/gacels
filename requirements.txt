@@ -4,3 +4,4 @@ matplotlib
 pandas==0.25.*
 pytest==5.3.*
 sphinx==2.3.*
+sphinx_rtd_theme
