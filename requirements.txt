@@ -6,3 +6,4 @@ pytest==5.3.*
 sphinx==2.3.*
 sphinx_rtd_theme
 pylint
+pytest-cov
