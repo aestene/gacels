@@ -10,3 +10,4 @@ script:
   - pylint src
   - pylint tests
   - python -m pytest -rA
+  - pytest --cov=src/AesLib tests/
