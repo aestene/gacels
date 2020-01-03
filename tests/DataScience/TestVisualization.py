@@ -1,9 +1,7 @@
 import os
 import pandas as pd
 
-
 from src.AesLib.DataScience import Visualization as vis
-
 
 def testPlotHeatmapBetweenColumnsSaveFigure():
     data = {'col1': [1, 2, 3, 4], 'col2': [1, 2, 3, 4]}
