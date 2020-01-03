@@ -5,7 +5,11 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-def plotHeatmapBetweenColumns(dataframe: pd.DataFrame, size: tuple, savefig=False, pathAndFileName='heatmap') -> plt.axes:
+def plotHeatmapBetweenColumns(
+                    dataframe: pd.DataFrame, 
+                    size: tuple, 
+                    savefig=False, 
+                    pathAndFileName='heatmap') -> plt.axes:
     """Plot heatmap between values of multiple columns in a Pandas dataframe.
 
     Arguments:
@@ -14,7 +18,7 @@ def plotHeatmapBetweenColumns(dataframe: pd.DataFrame, size: tuple, savefig=Fals
 
     Keyword Arguments:
         savefig {bool} -- True to save figure (default: {False})
-        pathAndFileName {str} -- Filepath specified with filename location for image (default: {'heatmap'})
+        pathAndFileName {str} -- Filepath (default: {'heatmap'})
 
     Returns:
         plt.axes -- Matplotlib axes object
