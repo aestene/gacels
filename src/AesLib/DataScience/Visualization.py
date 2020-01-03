@@ -6,9 +6,9 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 def plotHeatmapBetweenColumns(
-                    dataframe: pd.DataFrame, 
-                    size: tuple, 
-                    savefig=False, 
+                    dataframe: pd.DataFrame,
+                    size: tuple,
+                    savefig=False,
                     pathAndFileName='heatmap') -> plt.axes:
     """Plot heatmap between values of multiple columns in a Pandas dataframe.
 

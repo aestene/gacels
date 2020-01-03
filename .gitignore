@@ -1,4 +1,8 @@
 .vscode/settings.json
+.vscode/tasks.json
 tests/__pycache__
 tests/DataScience/__pycache__
 tests/DataEngineering__pycache__
+src/AesLib/__pycache__
+src/AesLib/DataScience/__pycache__
+src/AesLib/DataEngineering__pycache__
