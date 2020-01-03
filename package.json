@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "test": "python -m pytest -rA",
-        "lint": "pylint src && pylint tests",
+        "lint": "pylint src && pylint Tests",
         "build_docs": "sphinx-build -b html docs docs/_build"
     }
 }
