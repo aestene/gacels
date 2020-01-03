@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "test": "python -m pytest -rA",
+        "cov-test": "pytest --cov=src/AesLib tests/",
         "lint": "pylint src && pylint tests",
         "build_docs": "sphinx-build -b html docs docs/_build"
     }
