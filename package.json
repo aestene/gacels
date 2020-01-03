@@ -2,7 +2,7 @@
     "name": "AesLib",
     "version": "1.0.0",
     "scripts": {
-        "test": "python -m pytest",
+        "test": "python -m pytest -rA",
         "lint": "pylint src"
     }
 }
