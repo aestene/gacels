@@ -10,6 +10,7 @@ script:
   - pylint src
   - pylint tests
   - python -m pytest -rA
+  - py.test  --cov-report term --cov=src/AesLib/
 
 # env:
 #  - CODECOV_TOKEN=<token>#IF ONLY YOU HAVE A PRIVATE REPOSITORY
