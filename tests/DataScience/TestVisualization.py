@@ -1,5 +1,6 @@
-import pandas as pd
 import os
+import pandas as pd
+
 
 from src.AesLib.DataScience import Visualization as vis
 
@@ -16,6 +17,6 @@ def testPlotHeatmapBetweenColumnsSaveFigure():
 
     _ = vis.plotHeatmapBetweenColumns(dataFrame, size, savefig, filename)
 
-    assert os.path.isfile(filename) == True
+    assert os.path.isfile(filename)
 
     os.remove(filename)

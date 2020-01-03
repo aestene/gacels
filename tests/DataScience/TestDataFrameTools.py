@@ -1,4 +1,3 @@
-import pytest
 from src.AesLib.DataScience import DataFrameTools as dft
 
 def testGetIdxmaxIntegerPosOfSeries(pandasSeriesFixture):
