@@ -12,13 +12,13 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../src/aesLib'))
+sys.path.insert(0, os.path.abspath('../src/AesLib'))
 
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'aesLib'
+project = 'AesLib'
 copyright = '2020, Arnt Erik Stene'
 author = 'Arnt Erik Stene'
 
