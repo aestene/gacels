@@ -1,6 +1,5 @@
 .vscode/settings.json
 .vscode/tasks.json
-.coverage
 tests/__pycache__
 tests/DataScience/__pycache__
 tests/DataEngineering__pycache__
