@@ -14,6 +14,3 @@ def setSecretInKeyVault(keyVaultName: str, secretName: str, secretValue):
     credential = get_client_from_cli_profile(ComputeManagementClient).config.credentials
     client = SecretClient(keyVaultUri, credential)
     client.set_secret(secretName, secretValue)
-
-if __name__ == '__main__':
-    print(type(getSecretFromKeyVault('arnts-keyvault', 'bazefield-download-url')))
