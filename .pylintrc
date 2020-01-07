@@ -141,7 +141,10 @@ disable=print-statement,
         comprehension-escape,
         C0114,
         C0115,
-        C0116
+        C0116,
+        no-else-return,
+        anomalous-backslash-in-string,
+        redefined-outer-name
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
@@ -227,7 +230,7 @@ class-naming-style=PascalCase
 #class-rgx=
 
 # Naming style matching correct constant names.
-const-naming-style=UPPER_CASE
+const-naming-style=camelCase
 
 # Regular expression matching correct constant names. Overrides const-naming-
 # style.
@@ -252,7 +255,9 @@ good-names=i,
            Run,
            _,
            conftest,
-           tests
+           tests,
+           e,
+           f
 
 # Include a hint for the correct naming format with invalid-name.
 include-naming-hint=no
@@ -585,4 +590,4 @@ preferred-modules=
 # Exceptions that will emit a warning when being caught. Defaults to
 # "BaseException, Exception".
 overgeneral-exceptions=BaseException,
-                       Exception
+                       #Exception
