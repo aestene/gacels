@@ -39,21 +39,24 @@ def getFullTagListFromBazefield(keyVaultName: str):
 def getTransformedTagListFromBazefield(keyVaultName: str):
     tagList = getFullTagListFromBazefield(keyVaultName)
 
-    currentsReString = 'DOW-WFO-F000-33kV-30H\d{2}\+R01-H\d{2}-Feeder-(Current|Voltage|ActivePower)-*'
-    turbinesReString = 'DOW-[a-zA-Z_]\d{2}-(StateRun|ActivePower|ActivePowerLimit|Current|Voltage|ReactivePower|NacelleDirection|WindSpeed|ActualWindDirection_mean|AmbientTemp|BladeAngle|BladeAngleRef)(U|V|W|$|A|B|C)'
-    meteorologicalReString = 'DOW-F000-Met-THP-AirTemp$'
+    #currentsReString = 'DOW-WFO-F000-33kV-30H\d{2}\+R01-H\d{2}-Feeder-(Current|Voltage|ActivePower)-*'
+    turbinesReString = 'DOW-[a-zA-Z_]\d{2}-(StateRun|ActivePower|ActivePowerLimit|Voltage|ReactivePower|NacelleDirection|WindSpeed|ActualWindDirection_mean|AmbientTemp|BladeAngle|BladeAngleRef)(U|V|W|$|A|B|C)'
+    calcReString = 'DOW-[a-zA-Z_]\d{2}-CALC-(TheoreticalProduction)($))'
+    meteorologicalReString = 'DOW-F000-Met-THP-(AirTemp|AirHumidity|Latitude|Longitude)$'
 
 
 
-    tagIdsCurrents = [t["tagId"] for t in tagList
-                      if re.match(currentsReString, t["tagName"])
-                      and "IEC" not in t["tagName"]]
+    """ tagIdsCurrents = [t["tagId"] for t in tagList
+    if re.match(currentsReString, t["tagName"])
+    and "IEC" not in t["tagName"]] """
     tagIdsTurbines = [t["tagId"] for t in tagList
                       if re.match(turbinesReString, t["tagName"])]
     tagIdsMeteorological = [t["tagId"] for t in tagList
                             if re.match(meteorologicalReString, t["tagName"])]
+    tagIdsCalc = [t["tagId"] for t in tagList
+                  if re.match(calcReString, t["tagName"])]
 
-    tagIds = tagIdsCurrents + tagIdsTurbines + tagIdsMeteorological
+    tagIds = tagIdsTurbines + tagIdsCalc + tagIdsMeteorological
 
     data = {"tagIds": str(tagIds)[1:-1].replace(" ", "")}
 
@@ -102,7 +105,9 @@ def downloadFile(filename: str, fromTimeStampAsString: str, keyVaultName: str):
     proxy = {'https': Azure.getSecretFromKeyVault(keyVaultName, secretName='equinor-proxy')}
 
     res = requests.get(url=url.format(filename),
-                       auth=auth, verify=False, proxies=proxy)
+                       auth=auth,
+                       verify=False,
+                       proxies=proxy)
 
     file = res.content.decode()
 
