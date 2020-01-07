@@ -9,3 +9,4 @@ src/AesLib/DataEngineering__pycache__
 /Data/
 /.vscode
 /src/AesLib/DataEngineering/__pycache__
+/tests/DataEngineering/__pycache__
