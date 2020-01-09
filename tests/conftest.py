@@ -18,5 +18,4 @@ def keyVaultName():
 @pytest.fixture(scope='session')
 def secretName():
     return 'secret-for-testing'
-
-
+    
