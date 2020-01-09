@@ -36,35 +36,33 @@ def getFullTagListFromBazefield(keyVaultName: str):
     tagList = requests.get(url=tagListUrl, verify=False, auth=auth)
     return json.loads(tagList.text)
 
+def matchTaglistToRegularExpression(tagList: list, regularExpression: str) -> list:
+    tagIds = [t["tagId"] for t in tagList
+              if re.match(regularExpression, t["tagName"])]
+    return tagIds
+
 def getTransformedTagListFromBazefield(keyVaultName: str):
     tagList = getFullTagListFromBazefield(keyVaultName)
 
-    #currentsReString = 'DOW-WFO-F000-33kV-30H\d{2}\+R01-H\d{2}-Feeder-(Current|Voltage|ActivePower)-*'
-    turbinesReString = 'DOW-[a-zA-Z_]\d{2}-(StateRun|ActivePower|ActivePowerLimit|Voltage|ReactivePower|NacelleDirection|WindSpeed|ActualWindDirection_mean|AmbientTemp|BladeAngle|BladeAngleRef)(U|V|W|$|A|B|C)'
-    calcReString = 'DOW-[a-zA-Z_]\d{2}-CALC-(TheoreticalProduction)($))'
+    turbinesReString = 'DOW-[a-zA-Z_]\d{2}-(StateRun|ActivePower|ActivePowerLimit|ReactivePower|NacelleDirection|WindSpeed|OilLevel|ActualWindDirection_mean|AmbientTemp|BladeAngle|BladeAngleRef|Forecast-Available)(U|V|W|$|A|B|C)'
+    calcReString = 'DOW-[a-zA-Z_]\d{2}-CALC-(TheoreticalProduction)($)'
     meteorologicalReString = 'DOW-F000-Met-THP-(AirTemp|AirHumidity|Latitude|Longitude)$'
+    weatherForecastReString = 'DOW-EFS-(WindSpeed|WindDir|WaveDir|CurrentSpeed|CurrentDir)($|-10m|-40m|-110m)'
 
+    tagIdsTurbines = matchTaglistToRegularExpression(tagList, turbinesReString)
+    tagIdsMeteorological = matchTaglistToRegularExpression(tagList, meteorologicalReString)
+    tagIdsCalc = matchTaglistToRegularExpression(tagList, calcReString)
+    tagIdsForecast = matchTaglistToRegularExpression(tagList, weatherForecastReString)
 
+    tagIds = tagIdsTurbines + tagIdsCalc + tagIdsMeteorological + tagIdsForecast
 
-    """ tagIdsCurrents = [t["tagId"] for t in tagList
-    if re.match(currentsReString, t["tagName"])
-    and "IEC" not in t["tagName"]] """
-    tagIdsTurbines = [t["tagId"] for t in tagList
-                      if re.match(turbinesReString, t["tagName"])]
-    tagIdsMeteorological = [t["tagId"] for t in tagList
-                            if re.match(meteorologicalReString, t["tagName"])]
-    tagIdsCalc = [t["tagId"] for t in tagList
-                  if re.match(calcReString, t["tagName"])]
+    tagListToDownload = {"tagIds": str(tagIds)[1:-1].replace(" ", "")}
 
-    tagIds = tagIdsTurbines + tagIdsCalc + tagIdsMeteorological
-
-    data = {"tagIds": str(tagIds)[1:-1].replace(" ", "")}
-
-    data['dateTimeFormat'] = "dd-MM-yyyy HH:mm:ss.fff"
-    data["calenderUnit"] = "Minute"
-    data["useAssetTitle"] = False
-    data["useInterval"] = True
-    return json.dumps(data)
+    tagListToDownload['dateTimeFormat'] = "dd-MM-yyyy HH:mm:ss.fff"
+    tagListToDownload["calenderUnit"] = "Minute"
+    tagListToDownload["useAssetTitle"] = False
+    tagListToDownload["useInterval"] = True
+    return json.dumps(tagListToDownload)
 
 def prepareDownload(fromTimeStamp: int,
                     keyVaultName: str,
@@ -150,11 +148,3 @@ def downloadDataFromBazefieldAsCSV(fromTimeStamp: dt.datetime, toTimeStamp: dt.d
             return
         else:
             fromTimeStampInt = nextTimeStamp
-
-
-    
-if __name__ == '__main__':
-    fromTimeStamp = dt.datetime(year=2018, month=1, day=1)
-    toTimeStamp = dt.datetime(year=2018, month=1, day=1)
-
-    downloadDataFromBazefieldAsCSV(fromTimeStamp, toTimeStamp)

@@ -1,5 +1,6 @@
 """Tools to manipulate Pandas DataFrames for Data Science tasks.
 """
+import os
 import pandas as pd
 
 def setRowsToDisplayPandas(rows: int):
@@ -28,3 +29,17 @@ def getIdxmaxIntegerPosOfSeries(series: pd.Series) -> int:
             maxIndex = currentIndex
         currentIndex += 1
     return maxIndex
+
+def readCsvFiles(csvFiles: list) -> list:
+    csvDataFrames = []
+    for filename in csvFiles:
+        dataFrame = pd.read_csv(filename, sep=';')
+        csvDataFrames.append(dataFrame)
+    return csvDataFrames
+
+def stackCsvFiles(csvFiles: list):
+    csvDataFrames = readCsvFiles(csvFiles)
+    stackedDataFrame = pd.concat(csvDataFrames, axis=0, ignore_index=True)
+    stackedDataFrame.drop(stackedDataFrame.columns[0], axis=1, inplace=True)
+    stackedDataFrame.to_csv('stacked-dataframe.csv', sep=';', index=False)
+    
