@@ -8,3 +8,7 @@ sphinx_rtd_theme==0.4.*
 pylint==2.4.*
 codecov==2.0.*
 pytest-cov==2.8.*
+azure-keyvault-secrets==4.0.*
+azure.identity
+azure-cli-core
+azure.mgmt.compute
