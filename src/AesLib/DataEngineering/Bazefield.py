@@ -46,7 +46,7 @@ def getTransformedTagListFromBazefield(keyVaultName: str):
 
     turbinesReString = 'DOW-[a-zA-Z_]\d{2}-(StateRun|ActivePower|ActivePowerLimit|ReactivePower|NacelleDirection|WindSpeed|OilLevel|ActualWindDirection_mean|AmbientTemp|BladeAngle|BladeAngleRef|Forecast-Available)(U|V|W|$|A|B|C)'
     calcReString = 'DOW-[a-zA-Z_]\d{2}-CALC-(TheoreticalProduction)($)'
-    meteorologicalReString = 'DOW-F000-Met-THP-(AirTemp|AirHumidity|Latitude|Longitude)$'
+    meteorologicalReString = 'DOW-F000-Met-THP-(AirTemp|AirHumidity)$'
     weatherForecastReString = 'DOW-EFS-(WindSpeed|WindDir|WaveDir|CurrentSpeed|CurrentDir)($|-10m|-40m|-110m)'
 
     tagIdsTurbines = matchTaglistToRegularExpression(tagList, turbinesReString)
