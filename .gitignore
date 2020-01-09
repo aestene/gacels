@@ -11,3 +11,6 @@ src/AesLib/DataEngineering__pycache__
 /src/AesLib/DataEngineering/__pycache__
 /tests/DataEngineering/__pycache__
 /.pytest_cache
+/src/AesLib/DataScience/2017_11_01_00_00_00.csv
+/src/AesLib/DataScience/2017_11_02_00_00_00.csv
+src/AesLib/DataScience/2017_11_02_00_00_00.csv
