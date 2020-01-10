@@ -14,3 +14,6 @@ src/AesLib/DataEngineering__pycache__
 /src/AesLib/DataScience/2017_11_01_00_00_00.csv
 /src/AesLib/DataScience/2017_11_02_00_00_00.csv
 src/AesLib/DataScience/2017_11_02_00_00_00.csv
+/src/AesLib.egg-info
+/src/build
+/src/dist
