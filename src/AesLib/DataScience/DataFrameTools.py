@@ -37,9 +37,12 @@ def readCsvFiles(csvFiles: list) -> list:
         csvDataFrames.append(dataFrame)
     return csvDataFrames
 
-def stackCsvFiles(csvFiles: list):
+def stackCsvFiles(csvFiles: list, writeTofile=False) -> pd.DataFrame:
     csvDataFrames = readCsvFiles(csvFiles)
     stackedDataFrame = pd.concat(csvDataFrames, axis=0, ignore_index=True)
     stackedDataFrame.drop(stackedDataFrame.columns[0], axis=1, inplace=True)
-    stackedDataFrame.to_csv('stacked-dataframe.csv', sep=';', index=False)
+    if writeTofile:
+        stackedDataFrame.to_csv('stacked-dataframe.csv', sep=';', index=False)
+
+    return stackedDataFrame
     
