@@ -80,7 +80,7 @@ def prepareDownload(fromTimeStamp: int,
     data = getTransformedTagListFromBazefield(keyVaultName)
 
     interval = '10'
-    aggregates = 'End'
+    aggregates = 'Min,Max,Average,End,Standard deviation'
 
     res = requests.post(url=url.format(fromTimeStamp, endTimeStamp, interval, aggregates),
                         auth=auth,
@@ -109,7 +109,7 @@ def downloadFile(filename: str, fromTimeStampAsString: str, keyVaultName: str):
 
     file = res.content.decode()
 
-    destination = './Data/'
+    destination = './Data/WithAggregates/'
     filePath = destination + csvName
 
     with open(filePath, 'w') as f:

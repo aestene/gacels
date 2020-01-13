@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="steneae-lib", # Replace with your own username
+    name="aestene-lib", # Replace with your own username
     version="0.0.1",
     author="Arnt Erik Stene",
     author_email="steneae@gmail.com",
