@@ -8,7 +8,7 @@ import urllib3
 
 from requests.auth import HTTPBasicAuth
 
-from src.AesLib.DataEngineering import Azure
+from AesLib.DataEngineering import Azure
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -41,20 +41,14 @@ def matchTaglistToRegularExpression(tagList: list, regularExpression: str) -> li
               if re.match(regularExpression, t["tagName"])]
     return tagIds
 
-def getTransformedTagListFromBazefield(keyVaultName: str):
+def getTransformedTagListFromBazefield(regExStrings: list, keyVaultName: str):
     tagList = getFullTagListFromBazefield(keyVaultName)
 
-    turbinesReString = 'DOW-[a-zA-Z_]\d{2}-(StateRun|ActivePower|ActivePowerLimit|ReactivePower|NacelleDirection|WindSpeed|OilLevel|ActualWindDirection_mean|AmbientTemp|BladeAngle|BladeAngleRef|Forecast-Available)(U|V|W|$|A|B|C)'
-    calcReString = 'DOW-[a-zA-Z_]\d{2}-CALC-(TheoreticalProduction)($)'
-    meteorologicalReString = 'DOW-F000-Met-THP-(AirTemp|AirHumidity)$'
-    weatherForecastReString = 'DOW-EFS-(WindSpeed|WindDir|WaveDir|CurrentSpeed|CurrentDir)($|-10m|-40m|-110m)'
+    tagIds = []
 
-    tagIdsTurbines = matchTaglistToRegularExpression(tagList, turbinesReString)
-    tagIdsMeteorological = matchTaglistToRegularExpression(tagList, meteorologicalReString)
-    tagIdsCalc = matchTaglistToRegularExpression(tagList, calcReString)
-    tagIdsForecast = matchTaglistToRegularExpression(tagList, weatherForecastReString)
-
-    tagIds = tagIdsTurbines + tagIdsCalc + tagIdsMeteorological + tagIdsForecast
+    for regEx in regExStrings:
+        tagIds = tagIds + matchTaglistToRegularExpression(tagList=tagList,
+                                                          regularExpression=regEx)
 
     tagListToDownload = {"tagIds": str(tagIds)[1:-1].replace(" ", "")}
 
@@ -66,6 +60,9 @@ def getTransformedTagListFromBazefield(keyVaultName: str):
 
 def prepareDownload(fromTimeStamp: int,
                     keyVaultName: str,
+                    aggregates: str,
+                    interval: str,
+                    regExStrings: list,
                     downloadFileResolution=1000*3600*24):
 
     fromTimeStampAsString = getDatetimeAsString(fromTimeStamp)
@@ -77,10 +74,7 @@ def prepareDownload(fromTimeStamp: int,
     auth = getBazefieldAuthenticationFromKeyVault(keyVaultName)
     headers = getBazefieldHeaders()
     proxy = {'https': Azure.getSecretFromKeyVault(keyVaultName, secretName='equinor-proxy')}
-    data = getTransformedTagListFromBazefield(keyVaultName)
-
-    interval = '10'
-    aggregates = 'Min,Max,Average,End,Standard deviation'
+    data = getTransformedTagListFromBazefield(regExStrings, keyVaultName)
 
     res = requests.post(url=url.format(fromTimeStamp, endTimeStamp, interval, aggregates),
                         auth=auth,
@@ -125,16 +119,22 @@ def downloadFile(filename: str, fromTimeStampAsString: str, keyVaultName: str):
     return True
 
 
-def downloadDataFromBazefieldAsCSV(fromTimeStamp: dt.datetime, toTimeStamp: dt.datetime):
+def downloadDataFromBazefieldAsCSV(fromTimeStamp: dt.datetime, 
+                                   toTimeStamp: dt.datetime, 
+                                   aggregates: str, 
+                                   interval: str,
+                                   regExStrings: list,
+                                   keyVaultName: str):
     fromTimeStampInt = int(fromTimeStamp.timestamp()) * 1000
     toTimeStampInt = int(toTimeStamp.timestamp())
-
-    keyVaultName = 'arnts-keyvault'
 
     while True:
         try:
             filename, nextTimeStamp, fromTimeStampAsString = prepareDownload(fromTimeStampInt,
-                                                                             keyVaultName)
+                                                                             keyVaultName,
+                                                                             aggregates,
+                                                                             interval,
+                                                                             regExStrings)
             print('Downloading ' + fromTimeStampAsString)
             print(filename)
             _ = downloadFile(filename, fromTimeStampAsString, keyVaultName)

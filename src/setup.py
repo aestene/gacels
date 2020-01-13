@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="aestene-lib", # Replace with your own username
-    version="0.0.1",
+    version="0.0.6",
     author="Arnt Erik Stene",
     author_email="steneae@gmail.com",
     description="Package containing reusable tools for different applications.",
@@ -19,4 +19,14 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
+    install_requires=[
+        'numpy==1.17.*',
+        'seaborn==0.9.*',
+        'matplotlib==3.1.*',
+        'pandas==0.25.*',
+        'azure-keyvault-secrets==4.0.*',
+        'azure.identity',
+        'azure-cli-core',
+        'azure.mgmt.compute',            
+    ]
 )
