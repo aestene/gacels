@@ -33,5 +33,8 @@ jobs:
         pip install pytest
         python -m pytest -rA
         py.test --cov-report term --cov=src/
-        codecov
+    - name: Upload coverage to Codecov  
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
     
