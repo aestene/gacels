@@ -1,3 +1,4 @@
+# pylint: skip-file
 import setuptools
 
 with open("README.md", "r") as fh:
@@ -27,6 +28,5 @@ setuptools.setup(
         'azure-keyvault-secrets==4.0.*',
         'azure.identity',
         'azure-cli-core',
-        'azure.mgmt.compute',            
-    ]
+        'azure.mgmt.compute']
 )

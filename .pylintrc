@@ -257,7 +257,9 @@ good-names=i,
            conftest,
            tests,
            e,
-           f
+           f,
+           setup,
+           main
 
 # Include a hint for the correct naming format with invalid-name.
 include-naming-hint=no

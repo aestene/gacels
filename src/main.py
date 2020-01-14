@@ -1,3 +1,4 @@
+# pylint: skip-file
 import os
 import datetime as dt
 from AesLib.DataEngineering.Bazefield import downloadDataFromBazefieldAsCSV

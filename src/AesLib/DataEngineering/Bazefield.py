@@ -119,9 +119,9 @@ def downloadFile(filename: str, fromTimeStampAsString: str, keyVaultName: str):
     return True
 
 
-def downloadDataFromBazefieldAsCSV(fromTimeStamp: dt.datetime, 
-                                   toTimeStamp: dt.datetime, 
-                                   aggregates: str, 
+def downloadDataFromBazefieldAsCSV(fromTimeStamp: dt.datetime,
+                                   toTimeStamp: dt.datetime,
+                                   aggregates: str,
                                    interval: str,
                                    regExStrings: list,
                                    keyVaultName: str):

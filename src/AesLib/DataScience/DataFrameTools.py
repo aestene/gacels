@@ -1,6 +1,5 @@
 """Tools to manipulate Pandas DataFrames for Data Science tasks.
 """
-import os
 import pandas as pd
 
 def setRowsToDisplayPandas(rows: int):
