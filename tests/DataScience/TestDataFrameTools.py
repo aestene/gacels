@@ -12,10 +12,9 @@ def testGetIdxmaxIntegerPosOfSeries(pandasSeriesFixture):
     maxIndex = dft.getIdxmaxIntegerPosOfSeries(pandasSeriesFixture)
     assert maxIndex == 10
 
-def testStackCsvFiles(csvFilesToStack, stackedCsvFile):
-    stackedDataFrame = pd.read_csv(stackedCsvFile, sep=';')
+#def testStackCsvFiles(csvFilesToStack, stackedCsvFile):
+#    stackedDataFrame = pd.read_csv(stackedCsvFile, sep=';')
 
-    stackedCsvFiles = dft.stackCsvFiles(csvFilesToStack)
+#    stackedCsvFiles = dft.stackCsvFiles(csvFilesToStack)
 
-    assert stackedCsvFiles.equals(stackedDataFrame)
-    
+ #   assert stackedCsvFiles.equals(stackedDataFrame)
