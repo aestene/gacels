@@ -1,6 +1,8 @@
 # pylint: skip-file
 import os
 import datetime as dt
+import pandas as pd
+
 from AesLib.DataEngineering.Bazefield import downloadDataFromBazefieldAsCSV
 from AesLib.DataScience import DataFrameTools
 
