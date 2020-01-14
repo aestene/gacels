@@ -18,4 +18,14 @@ def keyVaultName():
 @pytest.fixture(scope='session')
 def secretName():
     return 'secret-for-testing'
+
+@pytest.fixture(scope='session')
+def csvFilesToStack():
+    files = ['tests\Fixtures\example_sheet_1.csv',
+             'tests\Fixtures\example_sheet_2.csv']
+    return files
+
+@pytest.fixture(scope='session')
+def stackedCsvFile():
+    return 'tests\Fixtures\stacked_example.csv'
     
