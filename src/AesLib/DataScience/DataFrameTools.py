@@ -10,6 +10,13 @@ def setRowsToDisplayPandas(rows: int):
     """
     pd.options.display.max_rows = rows
 
+def printDataFrame(dataFrame: pd.DataFrame, maxRows=5, maxColumns=7, width=None):
+    with pd.option_context(
+            'display.max_rows', maxRows,
+            'display.max_columns', maxColumns,
+            'display.width', width):
+        print(dataFrame)
+
 def getIdxmaxIntegerPosOfSeries(series: pd.Series) -> int:
     """Get the index of the largest entry in a Pandas series as an integer.
 
