@@ -51,4 +51,9 @@ def stackCsvFiles(csvFiles: list, writeTofile=False) -> pd.DataFrame:
         stackedDataFrame.to_csv('stacked-dataframe.csv', sep=';', index=False)
 
     return stackedDataFrame
-    
+
+def checkForColumnsWithNoDataOrVariation(dataFrame: pd.DataFrame):
+    description = dataFrame.describe().T
+    print("N Total columns         : {}".format(len(description)))
+    print("N Cols with no data     : {}".format(len(description.loc[description['count'] == 0])))
+    print("N Cols with no variation: {}".format(len(description.loc[description['std'] == 0])))
