@@ -62,7 +62,8 @@ def count_all_columns(df: pd.DataFrame) -> pd.Series:
     return df.count()
 
 def get_interval_size_with_consecutive_null(df, column):
-    intervals = df[column].isnull().astype(int).groupby(df[column].notnull().astype(int).cumsum()).sum()
+    intervals = \
+        df[column].isnull().astype(int).groupby(df[column].notnull().astype(int).cumsum()).sum()
     return intervals
 
 def remove_rows_with_zero_value(series):

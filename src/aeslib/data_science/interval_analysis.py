@@ -1,10 +1,11 @@
 from typing import List
 import datetime as dt
+import random
 
 import pandas as pd
 import numpy as np
 
-import random
+
 
 import matplotlib.pyplot as plt
 
@@ -49,39 +50,52 @@ class IntervalAnalysis:
         res = res.dropna()
 
         # Group res by start time. Max length to be used to generate intervals.
-        resgrp = res.groupby(level=0).agg(ucnt='nunique', valmax='max', valmin='min', cnt='count' )
+        resgrp = res.groupby(level=0).agg(ucnt='nunique', valmax='max', valmin='min', cnt='count')
         # Generate intervals by (start_time, start_time + max(length))
-        ser_interval = resgrp.apply(lambda x: pd.Interval(x.name, x.name+x['valmax'], closed='neither'), axis=1)
+        ser_interval = \
+            resgrp.apply(lambda x: pd.Interval(x.name,
+                                               x.name+x['valmax'],
+                                               closed='neither'),
+                         axis=1)
         merged = IntervalAnalysis.merge_overlapping_intervals(ser_interval.sort_values())
 
-        # Create data frame with merged intervals. 
+        # Create data frame with merged intervals.
         df_interval = pd.DataFrame(data={'interval': merged}, index=[x.left for x in merged])
-        df_interval['duration'] = df_interval.apply(lambda x: x['interval'].right - x['interval'].left, axis=1)
-        df_interval['duration_min'] = df_interval.apply(lambda x: x['duration'].total_seconds()/60, axis=1)
+        df_interval['duration'] = \
+            df_interval.apply(lambda x: x['interval'].right - x['interval'].left, axis=1)
+        df_interval['duration_min'] = \
+            df_interval.apply(lambda x: x['duration'].total_seconds()/60, axis=1)
 
         return df_interval
     
     @staticmethod
-    def plot_distribution(df_interval: pd.DataFrame, cut_durations: dt.timedelta = None, figsize:tuple = (16,16), bins=50):
-        df = df_interval if cut_durations is None else df_interval[df_interval.duration < cut_durations]
+    def plot_distribution(df_interval: pd.DataFrame, 
+                          cut_durations: dt.timedelta = None,
+                          figsize: tuple = (16, 16),
+                          bins=50):
+        df = df_interval if cut_durations is None \
+             else df_interval[df_interval.duration < cut_durations]
         plt.figure(figsize=figsize)
         df.duration_min.plot.hist(bins=bins)
-        plt.gca().set(title="Distribution of missing data duration (min)", xlabel="Duration, min", ylabel="Frequency")
-        plt.show()        
+        plt.gca().set(title="Distribution of missing data duration (min)",
+                      xlabel="Duration, min",
+                      ylabel="Frequency")
+        plt.show()
     
     @staticmethod
     def get_timeline(df_interval: pd.DataFrame, df: pd.DataFrame) -> pd.DataFrame:
-        df_timeline = pd.DataFrame(data={'dur':0}, \
-                    index=pd.DatetimeIndex(pd.date_range(start=df.index[0], end=df.index[-1], freq=Utility.get_freq(df))))\
+        df_timeline = pd.DataFrame(data={'dur':0},
+                                   index=pd.DatetimeIndex(pd.date_range(start=df.index[0],
+                                                                        end=df.index[-1],
+                                                                        freq=Utility.get_freq(df))))\
         .merge(df_interval, how='outer', left_index=True, right_index=True)
         df_timeline.loc[~pd.isna(df_timeline.duration_min), 'dur'] = df_timeline.loc[~pd.isna(df_timeline.duration_min), 'duration_min']
         df_timeline.index = df_timeline.index.tz_localize(None)
         return df_timeline
 
     @staticmethod
-    # TODO: Cut durations
-    def plot_timeline(df_interval: pd.DataFrame, df: pd.DataFrame, figsize:tuple = (16,16)):
-        fig = plt.figure(figsize=figsize)
+    def plot_timeline(df_interval: pd.DataFrame, df: pd.DataFrame, figsize: tuple = (16, 16)):
+        plt.figure(figsize=figsize)
         df_timeline = IntervalAnalysis.get_timeline(df_interval, df)
         df_timeline.dur.plot()
         plt.gca().set(title="Missing data duration (min) timeline", xlabel="Time", ylabel="Duration, min")
@@ -154,15 +168,15 @@ class IntervalAnalysis:
         return df_errs
 
     @staticmethod
-    def plot_threshold_experiment(df_errs: pd.DataFrame, method:str, figsize:tuple = (16,16)):
+    def plot_threshold_experiment(df_errs: pd.DataFrame, method: str, figsize: tuple = (16, 16)):
         df_errs_mean = df_errs.groupby('gap_length').mean()
-        df_errs_sem = df_errs.groupby('gap_length').sem()
+        #df_errs_sem = df_errs.groupby('gap_length').sem()
         plt.figure()
-        df_errs_mean.plot(figsize=figsize) 
+        df_errs_mean.plot(figsize=figsize)
         plt.xlabel("Missing gap size, data points")
         plt.ylabel("MAPE, %")
         plt.suptitle(f"{method} Interpolation error (MAPE) by missing gap size")
-        plt.show()        
+        plt.show()      
 
 
 class Utility:
