@@ -8,75 +8,76 @@ import urllib3
 
 from requests.auth import HTTPBasicAuth
 
-from AesLib.DataEngineering import Azure
+from aeslib.data_engineering import azure_tools as at
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-def getDatetimeAsString(timeStamp: dt.datetime.timestamp, stringFormat="%Y_%m_%d_%H_%M_%S") -> str:
-    timeStampAsDateTime = dt.datetime.fromtimestamp(timeStamp / 1000)
-    return timeStampAsDateTime.strftime(stringFormat)
+def get_datetime_as_string(timestamp: dt.datetime.timestamp,
+                           string_format="%Y_%m_%d_%H_%M_%S") -> str:
+    time_stamp_as_datetime = dt.datetime.fromtimestamp(timestamp / 1000)
+    return time_stamp_as_datetime.strftime(string_format)
 
-def reduceDataFrameSize(dataFrame) -> pd.DataFrame:
-    dataFrame.loc[:, dataFrame.select_dtypes(include=np.float64).columns] \
-        = dataFrame.select_dtypes(include=np.float64).astype(np.float32)
-    return dataFrame
+def reduce_dataframe_size(df) -> pd.DataFrame:
+    df.loc[:, df.select_dtypes(include=np.float64).columns] \
+        = df.select_dtypes(include=np.float64).astype(np.float32)
+    return df
 
-def getBazefieldAuthenticationFromKeyVault(keyVaultName: str) -> HTTPBasicAuth:
-    apiKey = Azure.getSecretFromKeyVault(keyVaultName, secretName='bazefield-api-key')
-    return HTTPBasicAuth(apiKey, '')
+def get_bazefield_authentication_from_key_vault(key_vault_name: str) -> HTTPBasicAuth:
+    api_key = at.get_secret_from_key_vault(key_vault_name, secret_name='bazefield-api-key')
+    return HTTPBasicAuth(api_key, '')
 
-def getBazefieldHeaders() -> dict:
+def get_bazefield_headers() -> dict:
     headers = {'Content-Type': 'application/json;charset=UTF-8',
                'Accept': 'application/json, text/plain, */*'}
     return headers
 
-def getFullTagListFromBazefield(keyVaultName: str):
-    auth = getBazefieldAuthenticationFromKeyVault(keyVaultName)
-    tagListUrl = Azure.getSecretFromKeyVault(keyVaultName, secretName='bazefield-tagid-url')
-    tagList = requests.get(url=tagListUrl, verify=False, auth=auth)
-    return json.loads(tagList.text)
+def get_full_tag_list_from_bazefield(key_vault_name: str):
+    auth = get_bazefield_authentication_from_key_vault(key_vault_name)
+    tag_list_url = at.get_secret_from_key_vault(key_vault_name, secret_name='bazefield-tagid-url')
+    tag_list = requests.get(url=tag_list_url, verify=False, auth=auth)
+    return json.loads(tag_list.text)
 
-def matchTaglistToRegularExpression(tagList: list, regularExpression: str) -> list:
-    tagIds = [t["tagId"] for t in tagList
-              if re.match(regularExpression, t["tagName"])]
-    return tagIds
+def match_taglist_to_regular_expression(tag_list: list, regular_expression: str) -> list:
+    tag_ids = [t["tagId"] for t in tag_list
+               if re.match(regular_expression, t["tagName"])]
+    return tag_ids
 
-def getTransformedTagListFromBazefield(regExStrings: list, keyVaultName: str):
-    tagList = getFullTagListFromBazefield(keyVaultName)
+def get_transformed_tag_list_from_bazefield(reg_ex_strings: list, key_vault_name: str):
+    tag_list = get_full_tag_list_from_bazefield(key_vault_name)
 
-    tagIds = []
+    tag_ids = []
 
-    for regEx in regExStrings:
-        tagIds = tagIds + matchTaglistToRegularExpression(tagList=tagList,
-                                                          regularExpression=regEx)
+    for reg_ex in reg_ex_strings:
+        tag_ids = tag_ids + match_taglist_to_regular_expression(tag_list=tag_list,
+                                                                regular_expression=reg_ex)
 
-    tagListToDownload = {"tagIds": str(tagIds)[1:-1].replace(" ", "")}
+    tag_list_to_download = {"tagIds": str(tag_ids)[1:-1].replace(" ", "")}
 
-    tagListToDownload['dateTimeFormat'] = "dd-MM-yyyy HH:mm:ss.fff"
-    tagListToDownload["calenderUnit"] = "Minute"
-    tagListToDownload["useAssetTitle"] = False
-    tagListToDownload["useInterval"] = True
-    return json.dumps(tagListToDownload)
+    tag_list_to_download['dateTimeFormat'] = "dd-MM-yyyy HH:mm:ss.fff"
+    tag_list_to_download["calenderUnit"] = "Minute"
+    tag_list_to_download["useAssetTitle"] = False
+    tag_list_to_download["useInterval"] = True
+    return json.dumps(tag_list_to_download)
 
-def prepareDownload(fromTimeStamp: int,
-                    keyVaultName: str,
-                    aggregates: str,
-                    interval: str,
-                    regExStrings: list,
-                    downloadFileResolution=1000*3600*24):
+def prepare_download(from_timestamp: int,
+                     key_vault_name: str,
+                     aggregates: str,
+                     interval: str,
+                     reg_ex_strings: list,
+                     download_file_resolution=1000*3600*24):
 
-    fromTimeStampAsString = getDatetimeAsString(fromTimeStamp)
-    endTimeStamp = fromTimeStamp + downloadFileResolution
+    from_timestamp_as_string = get_datetime_as_string(from_timestamp)
+    end_timestamp = from_timestamp + download_file_resolution
 
-    print("Downloading " + fromTimeStampAsString)
+    print("Downloading " + from_timestamp_as_string)
 
-    url = Azure.getSecretFromKeyVault(keyVaultName, secretName='bazefield-data-export-url')
-    auth = getBazefieldAuthenticationFromKeyVault(keyVaultName)
-    headers = getBazefieldHeaders()
-    proxy = {'https': Azure.getSecretFromKeyVault(keyVaultName, secretName='equinor-proxy')}
-    data = getTransformedTagListFromBazefield(regExStrings, keyVaultName)
+    url = at.get_secret_from_key_vault(key_vault_name, secret_name='bazefield-data-export-url')
+    auth = get_bazefield_authentication_from_key_vault(key_vault_name)
+    headers = get_bazefield_headers()
+    proxy = {'https': at.get_secret_from_key_vault(key_vault_name, secret_name='equinor-proxy')}
+    data = get_transformed_tag_list_from_bazefield(reg_ex_strings, key_vault_name)
 
-    res = requests.post(url=url.format(fromTimeStamp, endTimeStamp, interval, aggregates),
+    res = requests.post(url=url.format(from_timestamp, end_timestamp, interval, aggregates),
                         auth=auth,
                         headers=headers,
                         verify=False,
@@ -84,17 +85,17 @@ def prepareDownload(fromTimeStamp: int,
                         data=data)
 
     filename = res.text
-    nextTimeStamp = endTimeStamp
+    next_timestamp = end_timestamp
 
-    return filename, nextTimeStamp, fromTimeStampAsString
+    return filename, next_timestamp, from_timestamp_as_string
 
-def downloadFile(filename: str, fromTimeStampAsString: str, keyVaultName: str):
-    csvName = fromTimeStampAsString + '.csv'
+def download_file(filename: str, from_timestamp_as_string: str, key_vault_name: str):
+    csv_name = from_timestamp_as_string + '.csv'
     filename = filename.replace(".txt", "")
 
-    url = Azure.getSecretFromKeyVault(keyVaultName, secretName='bazefield-get-file-url')
-    auth = getBazefieldAuthenticationFromKeyVault(keyVaultName)
-    proxy = {'https': Azure.getSecretFromKeyVault(keyVaultName, secretName='equinor-proxy')}
+    url = at.get_secret_from_key_vault(key_vault_name, secret_name='bazefield-get-file-url')
+    auth = get_bazefield_authentication_from_key_vault(key_vault_name)
+    proxy = {'https': at.get_secret_from_key_vault(key_vault_name, secret_name='equinor-proxy')}
 
     res = requests.get(url=url.format(filename),
                        auth=auth,
@@ -104,47 +105,48 @@ def downloadFile(filename: str, fromTimeStampAsString: str, keyVaultName: str):
     file = res.content.decode()
 
     destination = './Data/WithAggregates/'
-    filePath = destination + csvName
+    file_path = destination + csv_name
 
-    with open(filePath, 'w') as f:
+    with open(file_path, 'w') as f:
         f.write(file)
         print("Finished.")
-        print("Downloaded to "+ str(filePath))
+        print("Downloaded to "+ str(file_path))
 
-    dataFrame = pd.read_csv(filePath, sep=';')
-    dataFrame = reduceDataFrameSize(dataFrame)
+    df = pd.read_csv(file_path, sep=';')
+    df = reduce_dataframe_size(df)
 
-    dataFrame.to_csv(filePath, sep=';')
+    df.to_csv(file_path, sep=';')
 
     return True
 
 
-def downloadDataFromBazefieldAsCSV(fromTimeStamp: dt.datetime,
-                                   toTimeStamp: dt.datetime,
-                                   aggregates: str,
-                                   interval: str,
-                                   regExStrings: list,
-                                   keyVaultName: str):
-    fromTimeStampInt = int(fromTimeStamp.timestamp()) * 1000
-    toTimeStampInt = int(toTimeStamp.timestamp())
+def download_data_from_bazefield_as_csv(from_timestamp: dt.datetime,
+                                        to_timestamp: dt.datetime,
+                                        aggregates: str,
+                                        interval: str,
+                                        reg_ex_strings: list,
+                                        key_vault_name: str):
+    from_timestamp_int = int(from_timestamp.timestamp()) * 1000
+    to_timestamp_int = int(to_timestamp.timestamp())
 
     while True:
         try:
-            filename, nextTimeStamp, fromTimeStampAsString = prepareDownload(fromTimeStampInt,
-                                                                             keyVaultName,
-                                                                             aggregates,
-                                                                             interval,
-                                                                             regExStrings)
-            print('Downloading ' + fromTimeStampAsString)
+            filename, next_timestamp, from_timestamp_as_string = \
+                prepare_download(from_timestamp=from_timestamp_int,
+                                 key_vault_name=key_vault_name,
+                                 aggregates=aggregates,
+                                 interval=interval,
+                                 reg_ex_strings=reg_ex_strings)
+            print('Downloading ' + from_timestamp_as_string)
             print(filename)
-            _ = downloadFile(filename, fromTimeStampAsString, keyVaultName)
+            _ = download_file(filename, from_timestamp_as_string, key_vault_name)
         except Exception as e:
             print(e)
-            fromTimeStampInt = nextTimeStamp
+            from_timestamp_int = next_timestamp
             continue
         
-        if dt.datetime.fromtimestamp(nextTimeStamp / 1000) \
-           > dt.datetime.fromtimestamp(toTimeStampInt):
+        if dt.datetime.fromtimestamp(next_timestamp / 1000) \
+           > dt.datetime.fromtimestamp(to_timestamp_int):
             return
         else:
-            fromTimeStampInt = nextTimeStamp
+            from_timestamp_int = next_timestamp

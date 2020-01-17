@@ -1,16 +1,16 @@
 import pandas as pd
 
-from src.AesLib.DataScience import DataFrameTools as dft
+from src.aeslib.data_science import dataframe_tools as dft
 
-def testSetRowsToDisplayPandas():
+def test_set_rows_to_display_pandas():
     rows = 100
-    dft.setRowsToDisplayPandas(rows)
+    dft.set_rows_to_display_pandas(rows)
 
     assert pd.options.display.max_rows == rows
 
-def testGetIdxmaxIntegerPosOfSeries(pandasSeriesFixture):
-    maxIndex = dft.getIdxmaxIntegerPosOfSeries(pandasSeriesFixture)
-    assert maxIndex == 10
+def test_get_idxmax_integer_pos_of_series(pandas_series_fixture):
+    max_index = dft.get_idxmax_integer_pos_of_series(pandas_series_fixture)
+    assert max_index == 10
 
 #def testStackCsvFiles(csvFilesToStack, stackedCsvFile):
 #    stackedDataFrame = pd.read_csv(stackedCsvFile, sep=';')
