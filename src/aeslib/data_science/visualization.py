@@ -8,7 +8,7 @@ import missingno as msno
 
 def plot_heatmap_between_columns(
         df: pd.DataFrame,
-        size: tuple,
+        size: tuple = (7, 7),
         savefig=False,
         path_and_file_name='heatmap') -> plt.axes:
     """Plot heatmap between values of multiple columns in a Pandas dataframe.
