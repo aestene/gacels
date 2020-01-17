@@ -6,6 +6,7 @@ import pandas as pd
 #from AesLib.DataEngineering.Bazefield import downloadDataFromBazefieldAsCSV
 from aeslib.data_science import dataframe_tools as dft
 from aeslib.data_science import IntervalAnalysis as ia
+from aeslib.data_science import bazefield as bf
 
 def download_data():
     from_timestamp = dt.datetime(year=2017, month=10, day=1)
@@ -20,7 +21,7 @@ def download_data():
 
     reg_ex_strings = [turbines_re_string, calc_re_string, meteorological_re_string, weather_forecast_re_string]
 
-    download_data_from_bazefield_as_csv(from_timestamp, to_timestamp, aggregates, interval, reg_ex_strings, key_vault_name)
+    bf.download_data_from_bazefield_as_csv(from_timestamp, to_timestamp, aggregates, interval, reg_ex_strings, key_vault_name)
 
 def process_data_frames():
     csv_files = os.listdir('data')
