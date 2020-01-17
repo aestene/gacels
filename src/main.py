@@ -5,6 +5,7 @@ import pandas as pd
 
 from AesLib.DataEngineering.Bazefield import downloadDataFromBazefieldAsCSV
 from AesLib.DataScience import DataFrameTools
+from AesLib.DataScience import IntervalAnalysis as ia
 
 def downloadData():
     fromTimeStamp = dt.datetime(year=2017, month=10, day=1)
@@ -24,7 +25,15 @@ def downloadData():
 def processDataFrames():
     csvFiles = os.listdir('data')
     csvFiles = ['data/' + filename for filename in csvFiles]
-    DataFrameTools.stackCsvFiles(csvFiles)
+    DataFrameTools.stack_csv_files(csvFiles)
 
 if __name__ == '__main__':
-    downloadData()
+    df = pd.read_csv('C:/Users/ARNTS/Documents/Repositories/aes-lib/src/AesLib/DataScience/2017_11_01_00_00_00.csv', sep=';')
+    df = df.iloc[1:100, 1:10]
+    df = df.set_index(pd.to_datetime(df['TimeStamp (GMT Standard Time UTC+00:00)']), drop=True)
+    df = df.drop('TimeStamp (GMT Standard Time UTC+00:00)', axis=1)
+
+    DataFrameTools.print_data_frame(df, 5, 3)
+    test = ia.IntervalAnalysis.get_empty_intervals(df, df.columns)
+    
+    print('end')

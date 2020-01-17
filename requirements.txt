@@ -12,3 +12,4 @@ azure-keyvault-secrets==4.0.*
 azure.identity
 azure-cli-core
 azure.mgmt.compute
+missingno

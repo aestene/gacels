@@ -28,5 +28,6 @@ setuptools.setup(
         'azure-keyvault-secrets==4.0.*',
         'azure.identity',
         'azure-cli-core',
-        'azure.mgmt.compute']
+        'azure.mgmt.compute',
+        'missingno==0.4.*']
 )

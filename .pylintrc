@@ -193,14 +193,14 @@ never-returning-functions=sys.exit
 [BASIC]
 
 # Naming style matching correct argument names.
-argument-naming-style=camelCase
+argument-naming-style=snake_case
 
 # Regular expression matching correct argument names. Overrides argument-
 # naming-style.
 #argument-rgx=
 
 # Naming style matching correct attribute names.
-attr-naming-style=camelCase
+attr-naming-style=snake_case
 
 # Regular expression matching correct attribute names. Overrides attr-naming-
 # style.
@@ -230,7 +230,7 @@ class-naming-style=PascalCase
 #class-rgx=
 
 # Naming style matching correct constant names.
-const-naming-style=camelCase
+const-naming-style=snake_case
 
 # Regular expression matching correct constant names. Overrides const-naming-
 # style.
@@ -241,7 +241,7 @@ const-naming-style=camelCase
 docstring-min-length=-1
 
 # Naming style matching correct function names.
-function-naming-style=camelCase
+function-naming-style=snake_case
 
 # Regular expression matching correct function names. Overrides function-
 # naming-style.
@@ -259,7 +259,8 @@ good-names=i,
            e,
            f,
            setup,
-           main
+           main,
+           df
 
 # Include a hint for the correct naming format with invalid-name.
 include-naming-hint=no
@@ -272,14 +273,14 @@ inlinevar-naming-style=any
 #inlinevar-rgx=
 
 # Naming style matching correct method names.
-method-naming-style=camelCase
+method-naming-style=snake_case
 
 # Regular expression matching correct method names. Overrides method-naming-
 # style.
 #method-rgx=
 
 # Naming style matching correct module names.
-module-naming-style=PascalCase
+module-naming-style=snake_case
 
 # Regular expression matching correct module names. Overrides module-naming-
 # style.
@@ -299,7 +300,7 @@ no-docstring-rgx=^_
 property-classes=abc.abstractproperty
 
 # Naming style matching correct variable names.
-variable-naming-style=camelCase
+variable-naming-style=snake_case
 
 # Regular expression matching correct variable names. Overrides variable-
 # naming-style.
