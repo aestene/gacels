@@ -7,25 +7,25 @@ import pandas as pd
 from aeslib.data_science import dataframe_tools as dft
 from aeslib.data_science import IntervalAnalysis as ia
 
-def downloadData():
-    fromTimeStamp = dt.datetime(year=2017, month=10, day=1)
-    toTimeStamp = dt.datetime(year=2017, month=10, day=1)
+def download_data():
+    from_timestamp = dt.datetime(year=2017, month=10, day=1)
+    to_timestamp = dt.datetime(year=2017, month=10, day=1)
     interval = '10'
     aggregates = 'Min,Max,Average,End,Standard deviation'
-    keyVaultName = 'arnts-keyvault'
-    turbinesReString = 'DOW-[a-zA-Z_]\d{2}-(StateRun|ActivePower|ActivePowerLimit|ReactivePower|NacelleDirection|WindSpeed|OilLevel|ActualWindDirection_mean|AmbientTemp|BladeAngle|BladeAngleRef|Forecast-Available)(U|V|W|$|A|B|C)'
-    calcReString = 'DOW-[a-zA-Z_]\d{2}-CALC-(TheoreticalProduction)($)'
-    meteorologicalReString = 'DOW-F000-Met-THP-(AirTemp|AirHumidity)$'
-    weatherForecastReString = 'DOW-EFS-(WindSpeed|WindDir|WaveDir|CurrentSpeed|CurrentDir)($|-10m|-40m|-110m)'
+    key_vault_name = 'arnts-keyvault'
+    turbines_re_string = 'DOW-[a-zA-Z_]\d{2}-(StateRun|ActivePower|ActivePowerLimit|ReactivePower|NacelleDirection|WindSpeed|OilLevel|ActualWindDirection_mean|AmbientTemp|BladeAngle|BladeAngleRef|Forecast-Available)(U|V|W|$|A|B|C)'
+    calc_re_string = 'DOW-[a-zA-Z_]\d{2}-CALC-(TheoreticalProduction)($)'
+    meteorological_re_string = 'DOW-F000-Met-THP-(AirTemp|AirHumidity)$'
+    weather_forecast_re_string = 'DOW-EFS-(WindSpeed|WindDir|WaveDir|CurrentSpeed|CurrentDir)($|-10m|-40m|-110m)'
 
-    regExStrings = [turbinesReString, calcReString, meteorologicalReString, weatherForecastReString]
+    reg_ex_strings = [turbines_re_string, calc_re_string, meteorological_re_string, weather_forecast_re_string]
 
-    downloadDataFromBazefieldAsCSV(fromTimeStamp, toTimeStamp, aggregates, interval, regExStrings, keyVaultName)
+    download_data_from_bazefield_as_csv(from_timestamp, to_timestamp, aggregates, interval, reg_ex_strings, key_vault_name)
 
-def processDataFrames():
-    csvFiles = os.listdir('data')
-    csvFiles = ['data/' + filename for filename in csvFiles]
-    DataFrameTools.stack_csv_files(csvFiles)
+def process_data_frames():
+    csv_files = os.listdir('data')
+    csv_files = ['data/' + filename for filename in csv_files]
+    dft.stack_csv_files(csv_files)
 
 if __name__ == '__main__':
     
