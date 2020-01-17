@@ -12,6 +12,7 @@ def plot_heatmap_between_columns(
         savefig=False,
         path_and_file_name='heatmap') -> plt.axes:
     """Plot heatmap between values of multiple columns in a Pandas dataframe.
+    Requires that there are no NaN values in the dataframe.
 
     Arguments:
         df {pd.DataFrame} -- Pandas dataframe
