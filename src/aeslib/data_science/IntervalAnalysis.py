@@ -1,5 +1,4 @@
-from typing import List, Dict
-from urllib.parse import urljoin
+from typing import List
 import datetime as dt
 
 import pandas as pd
