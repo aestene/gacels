@@ -140,39 +140,41 @@ class IntervalAnalysis:
 
         periods = range(len(df_good_interval.loc[df_good_interval.duration >= big_enough]))
         cols_analyzed = df.columns.to_list() if cols is None else cols
-        df_errs = pd.DataFrame(columns=cols_analyzed,index=pd.MultiIndex.from_product([missing_lengths, periods], names=['gap_length', 'period']))
+        df_errs = pd.DataFrame(columns=cols_analyzed,
+                               index=pd.MultiIndex.from_product([missing_lengths, periods],
+                                                                names=['gap_length', 'period']))
 
         # Loop through columns
         for colname in cols_analyzed:
 
-            for missing_length in missing_lengths: 
-
-
+            for missing_length in missing_lengths:
                 period = 0
-                for row in df_good_interval.loc[df_good_interval.duration >=big_enough].itertuples():
-                    df_test = pd.DataFrame(\
-                                        data={'x': np.arange(len(df.loc[row.left:row.right, colname])),\
-                                                'orig':df.loc[row.left:row.right, colname], \
-                                                'interpolated': df.loc[row.left:row.right, colname]}, \
-                                        index = df.loc[row.left:row.right].index)
-                    #df_test.index = [x.tz_convert(None) for x in df.loc[row.left:row.right].index.to_list()]
-                    ndrops = sorted( [random.randint(min_neighbours, len(df_test)-1-min_neighbours-missing_length) for x in range(nmissing)])
+                for row in df_good_interval.loc[df_good_interval.duration >= big_enough].itertuples():
+                    df_test = pd.DataFrame(
+                        data={'x': np.arange(len(df.loc[row.left:row.right, colname])),
+                              'orig':df.loc[row.left:row.right, colname],
+                              'interpolated': df.loc[row.left:row.right, colname]},
+                        index=df.loc[row.left:row.right].index)
+                    ndrops = \
+                        sorted([random.randint(min_neighbours, \
+                            len(df_test)-1-min_neighbours-missing_length)\
+                            for x in range(nmissing)])
                     
                     # Check for and remove overlapping missing intervals
-                    ndrops_corr  = [ndrops[0]]
+                    ndrops_corr = [ndrops[0]]
                     for ndrop in ndrops:
                         acur = ndrops_corr[-1]
                         if acur+missing_length > ndrop:
                             continue
                         else:
-                            ndrops_corr.append(ndrop)         
+                            ndrops_corr.append(ndrop)
                             
                     ndrops = sorted([x+j for j in range(missing_length) for x in ndrops_corr])
                     df_test.iloc[ndrops, df_test.columns.get_loc('interpolated')] = np.nan
                     df_fixed = df_test['interpolated'].interpolate(method=method, axis=0)
-                    #errs.append(mean_absolute_percentage_error(df_test.orig, df_fixed.interpolated))
-                    df_errs.loc[(missing_length,period),colname] = Utility.mean_absolute_percentage_error(df_test.orig, df_fixed)
-                    period+=1
+                    df_errs.loc[(missing_length, period), colname] = \
+                        Utility.mean_absolute_percentage_error(df_test.orig, df_fixed)
+                    period += 1
         df_errs = df_errs.astype('float')
         return df_errs
 
@@ -185,14 +187,14 @@ class IntervalAnalysis:
         plt.xlabel("Missing gap size, data points")
         plt.ylabel("MAPE, %")
         plt.suptitle(f"{method} Interpolation error (MAPE) by missing gap size")
-        plt.show()      
+        plt.show()
 
 
 class Utility:
 
     @staticmethod
     def get_freq(df: pd.DataFrame)->dt.timedelta:
-        assert len(df>2), "Not enough data in the data set"
+        assert len(df > 2), "Not enough data in the data set"
 
         check_level = None
 
@@ -209,6 +211,6 @@ class Utility:
         return check_level[1]-check_level[0]
 
     @staticmethod
-    def mean_absolute_percentage_error(y_true, y_pred): 
+    def mean_absolute_percentage_error(y_true, y_pred):
         y_true, y_pred = np.array(y_true), np.array(y_pred)
         return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
