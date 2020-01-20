@@ -4,7 +4,6 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import missingno as msno
 
 def plot_heatmap_between_columns(
         df: pd.DataFrame,
