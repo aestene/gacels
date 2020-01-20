@@ -61,20 +61,20 @@ def check_for_columns_with_no_data_or_variation(df: pd.DataFrame):
 def count_all_columns(df: pd.DataFrame) -> pd.Series:
     return df.count()
 
-def get_interval_size_with_consecutive_null(df, column):
+def get_interval_size_with_consecutive_null(df: pd.DataFrame, column):
     intervals = \
         df[column].isnull().astype(int).groupby(df[column].notnull().astype(int).cumsum()).sum()
     return intervals
 
-def remove_rows_with_zero_value(series):
+def remove_rows_with_zero_value(series: pd.Series):
     return series[series != 0]
 
-def count_null_values_in_columns(df):
+def count_null_values_in_columns(df: pd.DataFrame):
     return df.isnull().sum()
 
-def percentage_of_values_that_is_null(df):
-    return (df.isnull().sum() / df.count())*100
+def percentage_of_values_that_is_null(df: pd.DataFrame):
+    return (df.isnull().sum() / len(df))*100
 
-def show_columns_with_zero_variation(df):
+def show_columns_with_zero_variation(df: pd.DataFrame):
     description = df.describe()
     return description.loc[:, description.loc['std'] == 0]
