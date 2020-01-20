@@ -127,6 +127,16 @@ def download_data_from_bazefield_as_csv(from_timestamp: dt.datetime,
                                         interval: str,
                                         reg_ex_strings: list,
                                         key_vault_name: str):
+    """Downloads data from Bazefield using the Bazefield API.
+    
+    Arguments:
+        from_timestamp {dt.datetime} -- Download data from and including this time.
+        to_timestamp {dt.datetime} -- Download data to and including this time.
+        aggregates {str} -- Which aggregates to download as specified by Bazefield.
+        interval {str} -- Data interval to download. Example: '10Min'.
+        reg_ex_strings {list} -- A list of regular expressions to match tags against.
+        key_vault_name {str} -- KeyVault populated with secrets as described in repo.
+    """
     from_timestamp_int = int(from_timestamp.timestamp()) * 1000
     to_timestamp_int = int(to_timestamp.timestamp())
 
