@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="aestene-lib", # Replace with your own username
-    version="0.0.11",
+    version="0.0.12",
     author="Arnt Erik Stene",
     author_email="steneae@gmail.com",
     description="Package containing reusable tools for different applications.",
