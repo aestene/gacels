@@ -105,7 +105,7 @@ def download_file(filename: str, from_timestamp_as_string: str, key_vault_name: 
 
     file = res.content.decode()
 
-    destination = './Data/UTC/'
+    destination = '../Data/UTC/'
     file_path = destination + csv_name
 
     with open(file_path, 'w') as f:
