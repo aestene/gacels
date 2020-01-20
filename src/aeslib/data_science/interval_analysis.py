@@ -84,11 +84,16 @@ class IntervalAnalysis:
     
     @staticmethod
     def get_timeline(df_interval: pd.DataFrame, df: pd.DataFrame) -> pd.DataFrame:
-        df_timeline = pd.DataFrame(data={'dur':0},
-                                   index=pd.DatetimeIndex(pd.date_range(start=df.index[0],
-                                                                        end=df.index[-1],
-                                                                        freq=Utility.get_freq(df))))\
-        .merge(df_interval, how='outer', left_index=True, right_index=True)
+        df_timeline = pd.DataFrame(
+            data={'dur':0},
+            index=pd.DatetimeIndex(pd.date_range(
+                start=df.index[0],
+                end=df.index[-1],
+                freq=Utility.get_freq(df)))).merge(
+                    right=df_interval,
+                    how='outer',
+                    left_index=True,
+                    right_index=True)
         df_timeline.loc[~pd.isna(df_timeline.duration_min), 'dur'] = \
             df_timeline.loc[~pd.isna(df_timeline.duration_min), 'duration_min']
         df_timeline.index = df_timeline.index.tz_localize(None)
