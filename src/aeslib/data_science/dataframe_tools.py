@@ -73,7 +73,7 @@ def count_null_values_in_columns(df: pd.DataFrame):
     return df.isnull().sum()
 
 def percentage_of_values_that_is_null(df: pd.DataFrame):
-    return (df.isnull().sum() / len(df))*100
+    return (count_null_values_in_columns(df) / len(df))*100
 
 def show_columns_with_zero_variation(df: pd.DataFrame):
     description = df.describe()
