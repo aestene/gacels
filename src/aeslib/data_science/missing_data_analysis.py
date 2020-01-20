@@ -11,7 +11,7 @@ def plot_correlation_between_missing_data(df: pd.DataFrame, group_by=None):
     
     Arguments:
         df {pd.DataFrame} -- Pandas dataframe.
-        group_by {str} -- Specify the name of a column in df to groupby if desired. 
+        group_by {str} -- Specify the name of a column in df to groupby if desired.
         Otherwise leave it as none. (default: {None})
     """
     if group_by is not None:
@@ -28,7 +28,7 @@ def plot_missing_intervals(df: pd.DataFrame, group_by=None):
         df {pd.DataFrame} -- Dataframe to plot missing data for.
     
     Keyword Arguments:
-        group_by {str} -- Specify the name of a column in df to groupby if desired. 
+        group_by {str} -- Specify the name of a column in df to groupby if desired.
         Otherwise leave it as none. (default: {None})
     """
     if group_by is not None:
