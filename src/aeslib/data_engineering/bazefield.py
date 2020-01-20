@@ -53,10 +53,11 @@ def get_transformed_tag_list_from_bazefield(reg_ex_strings: list, key_vault_name
 
     tag_list_to_download = {"tagIds": str(tag_ids)[1:-1].replace(" ", "")}
 
-    tag_list_to_download['dateTimeFormat'] = "dd-MM-yyyy HH:mm:ss.fff"
+    tag_list_to_download["dateTimeFormat"] = "dd-MM-yyyy HH:mm:ss.fff"
     tag_list_to_download["calenderUnit"] = "Minute"
     tag_list_to_download["useAssetTitle"] = False
     tag_list_to_download["useInterval"] = True
+    tag_list_to_download["exportInUtc"] = True
     return json.dumps(tag_list_to_download)
 
 def prepare_download(from_timestamp: int,
@@ -104,7 +105,7 @@ def download_file(filename: str, from_timestamp_as_string: str, key_vault_name: 
 
     file = res.content.decode()
 
-    destination = './Data/WithAggregates/'
+    destination = './Data/UTC/'
     file_path = destination + csv_name
 
     with open(file_path, 'w') as f:

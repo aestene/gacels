@@ -19,3 +19,4 @@ src/AesLib/DataScience/2017_11_02_00_00_00.csv
 /src/dist
 /src/aestene_lib.egg-info
 /src/aeslib/data_science/__pycache__
+/src/aeslib/data_engineering/__pycache__

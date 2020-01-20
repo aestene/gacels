@@ -69,7 +69,7 @@ class IntervalAnalysis:
         return df_interval
     
     @staticmethod
-    def plot_distribution(df_interval: pd.DataFrame, 
+    def plot_distribution(df_interval: pd.DataFrame,
                           cut_durations: dt.timedelta = None,
                           figsize: tuple = (16, 16),
                           bins=50):
@@ -89,7 +89,8 @@ class IntervalAnalysis:
                                                                         end=df.index[-1],
                                                                         freq=Utility.get_freq(df))))\
         .merge(df_interval, how='outer', left_index=True, right_index=True)
-        df_timeline.loc[~pd.isna(df_timeline.duration_min), 'dur'] = df_timeline.loc[~pd.isna(df_timeline.duration_min), 'duration_min']
+        df_timeline.loc[~pd.isna(df_timeline.duration_min), 'dur'] = \
+            df_timeline.loc[~pd.isna(df_timeline.duration_min), 'duration_min']
         df_timeline.index = df_timeline.index.tz_localize(None)
         return df_timeline
 
@@ -98,7 +99,9 @@ class IntervalAnalysis:
         plt.figure(figsize=figsize)
         df_timeline = IntervalAnalysis.get_timeline(df_interval, df)
         df_timeline.dur.plot()
-        plt.gca().set(title="Missing data duration (min) timeline", xlabel="Time", ylabel="Duration, min")
+        plt.gca().set(title="Missing data duration (min) timeline",
+                      xlabel="Time",
+                      ylabel="Duration, min")
         plt.show()
 
         # df - original data set
@@ -116,20 +119,26 @@ class IntervalAnalysis:
 
 
     @staticmethod
-    def threshold_experiment(df: pd.DataFrame, df_interval: pd.DataFrame, method:str, missing_lengths: List, \
-                cols: List = None,
-                big_enough: dt.timedelta = dt.timedelta(days=10),\
-                nmissing:int = 15, \
-                min_neighbours:int =1 )->pd.DataFrame:
+    def threshold_experiment(df: pd.DataFrame,
+                             df_interval: pd.DataFrame,
+                             method: str,
+                             missing_lengths: List,
+                             cols: List = None,
+                             big_enough: dt.timedelta = dt.timedelta(days=10),
+                             nmissing: int = 15,
+                             min_neighbours: int = 1) -> pd.DataFrame:
         # find "Good" intervals
-        df_good_interval = pd.DataFrame(data = {'left': df_interval.interval.apply(lambda x: x.right),\
-                                                'right':df_interval.shift(-1).interval.apply(lambda x: x.left if not pd.isna(x) else df.iloc[-1].name)})
+        df_good_interval = pd.DataFrame(
+            data={'left': df_interval.interval.apply(lambda x: x.right),
+                  'right':df_interval.shift(-1).interval.apply(lambda x: x.left
+                                                               if not pd.isna(x)
+                                                               else df.iloc[-1].name)})
         df_good_interval['duration'] = df_good_interval.right-df_good_interval.left
         # Iterate through 'good intervals' which are big enough
         # build a test dataframe with orig and interpolated columns
         # drop random data points
 
-        periods = range(len(df_good_interval.loc[df_good_interval.duration >=big_enough]))
+        periods = range(len(df_good_interval.loc[df_good_interval.duration >= big_enough]))
         cols_analyzed = df.columns.to_list() if cols is None else cols
         df_errs = pd.DataFrame(columns=cols_analyzed,index=pd.MultiIndex.from_product([missing_lengths, periods], names=['gap_length', 'period']))
 
