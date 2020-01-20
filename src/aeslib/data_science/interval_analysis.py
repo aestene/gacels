@@ -199,12 +199,12 @@ class Utility:
         check_level = None
 
         #Compensate for MultiIndex - find Datetime level
-        if type(df.index) is pd.MultiIndex:
+        if isinstance(df.index, pd.MultiIndex):
             for level in df.index.levels:
-                if type(level) is pd.DatetimeIndex:
+                if isinstance(level, pd.DatetimeIndex):
                     check_level = level
                     break
-        elif type(df.index) is pd.DatetimeIndex:
+        elif isinstance(df.index, pd.DatetimeIndex):
             check_level = df.index
 
         assert check_level is not None, "Cannot define frequency - no DatetimeIndex given"
