@@ -6,13 +6,20 @@ import pandas as pd
 
 from aeslib.data_science import interval_analysis as ia
 
-def plot_correlation_between_missing_data(df: pd.DataFrame):
+def plot_correlation_between_missing_data(df: pd.DataFrame, group_by=None):
     """Get a Seaborn heatmap of column correlations.
     
     Arguments:
         df {pd.DataFrame} -- Pandas dataframe.
+        group_by {str} -- Specify the name of a column in df to groupby if desired. 
+        Otherwise leave it as none. (default: {None})
     """
-    msno.heatmap(df)
+    if group_by is not None:
+        grouped = df.groupby(group_by)
+        for _, group in grouped:
+            msno.heatmap(group)
+    else:
+        msno.heatmap(df)
 
 def plot_missing_intervals(df: pd.DataFrame, group_by=None):
     """Plot missing intervals using functionality from the missingno package.
