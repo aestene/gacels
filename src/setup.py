@@ -26,8 +26,8 @@ setuptools.setup(
         'matplotlib==3.1.*',
         'pandas==0.25.*',
         'azure-keyvault-secrets==4.0.*',
-        'azure.identity',
-        'azure-cli-core',
-        'azure.mgmt.compute',
+        'azure.identity==1.2.*',
+        'azure-cli-core==2.0.*',
+        'azure.mgmt.compute==10.0.*',
         'missingno==0.4.*']
 )
