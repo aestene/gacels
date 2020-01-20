@@ -29,3 +29,14 @@ def find_missing_intervals_for_dataframe(df: pd.DataFrame, cols: List = None) ->
         pd.DataFrame -- Dataframe with intervals.
     """
     return ia.IntervalAnalysis.get_empty_intervals(df=df, cols=cols)
+
+def plot_missing_intervals(df: pd.DataFrame, group_by=None):
+    if group_by is not None:
+        grouped = df.groupby(group_by)
+        for _, group in grouped:
+            msno.matrix(group)
+    else:
+        msno.matrix(df)
+        
+def plot_missing_value_column_correlation(df: pd.DataFrame):
+    msno.heatmap(df)

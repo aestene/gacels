@@ -33,14 +33,3 @@ def plot_heatmap_between_columns(
         plt.savefig(path_and_file_name)
 
     return axes
-
-def plot_missing_intervals(df: pd.DataFrame, group_by=None):
-    if group_by is not None:
-        grouped = df.groupby(group_by)
-        for _, group in grouped:
-            msno.matrix(group)
-    else:
-        msno.matrix(df)
-        
-def plot_missing_value_column_correlation(df: pd.DataFrame):
-    msno.heatmap(df)
