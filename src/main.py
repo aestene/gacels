@@ -5,9 +5,10 @@ import pandas as pd
 
 #from AesLib.DataEngineering.Bazefield import downloadDataFromBazefieldAsCSV
 from aeslib.data_science import dataframe_tools as dft
-from aeslib.data_science import interval_analysis as ia
+from aeslib.data_science.interval_analysis import IntervalAnalysis
 from aeslib.data_engineering import bazefield as bf
 from aeslib.data_engineering import azure_tools as at
+from aeslib.data_science import missing_data_analysis as mda
 
 def download_data():
     from_timestamp = dt.datetime(year=2017, month=10, day=1)
@@ -39,7 +40,5 @@ def process_data_frames():
     dft.stack_csv_files(csv_files)
 
 if __name__ == '__main__':
-    
-    download_data()
 
     print('end')

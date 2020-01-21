@@ -56,16 +56,20 @@ class IntervalAnalysis:
                                                x.name+x['valmax'],
                                                closed='neither'),
                          axis=1)
-        merged = IntervalAnalysis.merge_overlapping_intervals(ser_interval.sort_values())
+        if not ser_interval.empty:
 
-        # Create data frame with merged intervals.
-        df_interval = pd.DataFrame(data={'interval': merged}, index=[x.left for x in merged])
-        df_interval['duration'] = \
-            df_interval.apply(lambda x: x['interval'].right - x['interval'].left, axis=1)
-        df_interval['duration_min'] = \
-            df_interval.apply(lambda x: x['duration'].total_seconds()/60, axis=1)
+            merged = IntervalAnalysis.merge_overlapping_intervals(ser_interval.sort_values())
 
-        return df_interval
+            # Create data frame with merged intervals.
+            df_interval = pd.DataFrame(data={'interval': merged}, index=[x.left for x in merged])
+            df_interval['duration'] = \
+                df_interval.apply(lambda x: x['interval'].right - x['interval'].left, axis=1)
+            df_interval['duration_min'] = \
+                df_interval.apply(lambda x: x['duration'].total_seconds()/60, axis=1)
+
+            return df_interval
+        else:
+            return ser_interval
     
     @staticmethod
     def plot_distribution(df_interval: pd.DataFrame,
