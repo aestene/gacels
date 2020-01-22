@@ -1,3 +1,4 @@
+# This functionality is courtesy of Anton Eskov (@antoneskov)
 import datetime as dt
 from abc import ABC, abstractmethod
 

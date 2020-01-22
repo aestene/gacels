@@ -1,3 +1,4 @@
+# This functionality is courtesy of Thibaut Forest (@thif)
 import datetime as dt
 import json
 import re

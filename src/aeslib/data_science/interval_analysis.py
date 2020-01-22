@@ -1,3 +1,5 @@
+# This functionality is courtesy of Anton Eskov (@antoneskov)
+
 from typing import List
 import datetime as dt
 import random
