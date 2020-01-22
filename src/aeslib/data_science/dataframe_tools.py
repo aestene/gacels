@@ -1,6 +1,7 @@
 """Tools to manipulate Pandas DataFrames for Data Science tasks.
 """
 import pandas as pd
+import datetime as dt
 
 def set_rows_to_display_pandas(rows: int):
     """Set the number of rows Pandas will display when showing a DataFrame.
@@ -78,3 +79,30 @@ def percentage_of_values_that_is_null(df: pd.DataFrame):
 def show_columns_with_zero_variation(df: pd.DataFrame):
     description = df.describe()
     return description.loc[:, description.loc['std'] == 0]
+
+def add_rolling_features(df: pd.DataFrame,
+                         columns: list,
+                         window: dt.timedelta,
+                         rolling_sum: bool = True,
+                         rolling_mean: bool = True,
+                         rolling_std: bool = True):
+    dfs = [df]
+    df_rolling = df[columns]
+    
+    if rolling_sum:
+        df_sum = df_rolling.rolling(window=window).sum()
+        df_sum.columns = [c + "_rolling_sum" for c in df_sum.columns]
+        dfs.append(df_sum)
+    
+    if rolling_mean:
+        df_mean = df_rolling.rolling(window=window).mean()
+        df_mean.columns = [c + "_rolling_mean" for c in df_mean.columns]
+        dfs.append(df_mean)
+    
+    if rolling_std:
+        df_std = df_rolling.rolling(window=window).std()
+        df_std.columns = [c + "_rolling_std" for c in df_std.columns]
+        dfs.append(df_std)
+    
+    df = pd.concat(dfs, axis=1)
+    return df
