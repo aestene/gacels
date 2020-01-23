@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="aestene-lib", # Replace with your own username
-    version="0.1.4",
+    name="gacels", # Replace with your own username
+    version="0.1.5",
     author="Arnt Erik Stene",
     author_email="steneae@gmail.com",
     description="Package containing reusable tools for different applications.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/aestene/AesLib",
+    url="https://github.com/equinor/gacels",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

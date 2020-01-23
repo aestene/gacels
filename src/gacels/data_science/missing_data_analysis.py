@@ -4,7 +4,7 @@ import missingno as msno
 import pandas as pd
 
 
-from aeslib.data_science import interval_analysis as ia
+from gacels.data_science import interval_analysis as ia
 
 def plot_correlation_between_missing_data(df: pd.DataFrame, group_by=None):
     """Get a Seaborn heatmap of column correlations.

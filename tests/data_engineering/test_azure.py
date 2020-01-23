@@ -1,4 +1,4 @@
-from src.aeslib.data_engineering import azure_tools as at
+from src.gacels.data_engineering import azure_tools as at
 
 #def testGetSecretFromKeyVault(keyVaultName, secretName):
 #    secret = Azure.getSecretFromKeyVault(keyVaultName, secretName)

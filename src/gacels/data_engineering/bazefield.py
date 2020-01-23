@@ -9,7 +9,7 @@ import urllib3
 
 from requests.auth import HTTPBasicAuth
 
-from aeslib.data_engineering import azure_tools as at
+from gacels.data_engineering import azure_tools as at
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 

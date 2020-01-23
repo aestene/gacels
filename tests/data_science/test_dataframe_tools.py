@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.aeslib.data_science import dataframe_tools as dft
+from src.gacels.data_science import dataframe_tools as dft
 
 def test_set_rows_to_display_pandas():
     rows = 100

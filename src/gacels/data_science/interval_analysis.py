@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-from aeslib.data_science.utility import Utility
+from gacels.data_science.utility import Utility
 
 class IntervalAnalysis:
     def __init__(self, df_interval: pd.DataFrame):

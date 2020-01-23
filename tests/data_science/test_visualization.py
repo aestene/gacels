@@ -1,6 +1,6 @@
 import os
 
-from src.aeslib.data_science import visualization as vis
+from src.gacels.data_science import visualization as vis
 
 def test_plot_heatmap_between_columns_save_figure(pandas_dataframe_fixture):
     size = (10, 10)

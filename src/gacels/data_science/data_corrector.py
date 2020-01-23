@@ -4,9 +4,9 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 
-from aeslib.data_science.utility import Utility
-from aeslib.data_engineering.azure_tools import AzureKeyvaultHelper
-from aeslib.data_science.interval_analysis import IntervalAnalysis, IntervalAnalysisMulti
+from gacels.data_science.utility import Utility
+from gacels.data_engineering.azure_tools import AzureKeyvaultHelper
+from gacels.data_science.interval_analysis import IntervalAnalysis, IntervalAnalysisMulti
 
 
 class DataCorrectorBase(ABC):
