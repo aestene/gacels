@@ -4,7 +4,7 @@ import missingno as msno
 import pandas as pd
 
 
-from gacels.data_science import interval_analysis as ia
+from gacels.data_science.interval_analysis import IntervalAnalysis
 
 def plot_correlation_between_missing_data(df: pd.DataFrame, group_by=None):
     """Get a Seaborn heatmap of column correlations.
@@ -52,4 +52,4 @@ def find_missing_intervals_for_dataframe(df: pd.DataFrame, cols: List = None) ->
     Returns:
         pd.DataFrame -- Dataframe with intervals.
     """
-    return ia.IntervalAnalysis.get_empty_intervals(df=df, cols=cols)
+    return IntervalAnalysis.get_empty_intervals(df=df, cols=cols)
