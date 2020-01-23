@@ -19,9 +19,14 @@ class BazefieldClient:
                  from_timestamp: dt.datetime,
                  to_timestamp: dt.datetime,
                  reg_ex_strings: list,
-                 aggregates: str = 'Min,Max,Average,End,Standard deviation',
-                 interval: str = '10',
-                 destination: str = '.'):
+                 aggregates: str = 'Raw',#'Min,Max,Average,End,Standard deviation',
+                 interval: str = '0', #'10',
+                 destination: str = '.',
+                 datetime_format: str = 'dd-MM-yyyy HH:mm:ss.fff',
+                 calender_unit: str = 'Second',
+                 use_asset_title: bool = False,
+                 use_interval: bool = True,
+                 export_in_utc: bool = True):
         self.keyvault = keyvault
         self.from_timestamp = from_timestamp
         self.to_timestamp = to_timestamp
@@ -29,6 +34,11 @@ class BazefieldClient:
         self.aggregates = aggregates
         self.interval = interval
         self.destination = destination
+        self.datetime_format = datetime_format
+        self.calender_unit = calender_unit
+        self.use_asset_title = use_asset_title
+        self.use_interval = use_interval
+        self.export_in_utc = export_in_utc
         
     @staticmethod
     def _get_datetime_as_string(timestamp: dt.datetime.timestamp,
@@ -74,11 +84,13 @@ class BazefieldClient:
 
         tag_list_to_download = {"tagIds": str(tag_ids)[1:-1].replace(" ", "")}
 
-        tag_list_to_download["dateTimeFormat"] = "dd-MM-yyyy HH:mm:ss.fff"
-        tag_list_to_download["calenderUnit"] = "Minute"
-        tag_list_to_download["useAssetTitle"] = False
-        tag_list_to_download["useInterval"] = True
-        tag_list_to_download["exportInUtc"] = True
+        tag_list_to_download["dateTimeFormat"] = self.datetime_format
+        if self.calender_unit:
+            tag_list_to_download["calenderUnit"] = self.calender_unit
+        #tag_list_to_download["useAssetTitle"] = self.use_asset_title
+        if self.use_interval:
+            tag_list_to_download["useInterval"] = self.use_interval
+        tag_list_to_download["exportInUtc"] = self.export_in_utc
         return json.dumps(tag_list_to_download)
 
     def prepare_download(self,
