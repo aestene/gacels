@@ -13,3 +13,4 @@ src/gacels/DataEngineering__pycache__
 /.pytest_cache
 /src/gacels/data_science/__pycache__
 /src/gacels/data_engineering/__pycache__
+/src/gacels/data_science/visualization/__pycache__

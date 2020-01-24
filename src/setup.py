@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="gacels", # Replace with your own username
-    version="0.1.8",
+    version="0.1.9",
     author="Arnt Erik Stene",
     author_email="steneae@gmail.com",
     description="Package containing reusable tools for different applications.",
