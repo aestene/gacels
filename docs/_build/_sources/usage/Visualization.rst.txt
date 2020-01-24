@@ -1,1 +1,2 @@
-.. autoclass:: gacels.data_science.visualization.heatmap.HeatmapPlotter
+Visualization
+.. autoclass:: data_science.visualization.heatmap.HeatmapPlotter

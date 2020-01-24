@@ -10,8 +10,7 @@ Welcome to gacels' documentation!
    :maxdepth: 2
    :caption: Contents:
 
-    usage/quickstart
-    usage/Visualization
+   usage/Visualization
 
 
 Indices and tables
